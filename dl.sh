@@ -107,21 +107,29 @@ curl --fail -# -L -o "$TMP_DIR/$FILE_NAME" "$ASSET_URL"
 
 # Handle compressed files quietly
 case "$FILE_NAME" in
-    *.gz)
-        gzip -d "$TMP_DIR/$FILE_NAME" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
-        ;;
     *.bz2)
         bzip2 -d "$TMP_DIR/$FILE_NAME" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
         ;;
     *.tar.bz|*.tar.bz2)
-        tar -jxf "$TMP_DIR/$FILE_NAME" -C "$TMP_DIR" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        tar -xjvf "$TMP_DIR/$FILE_NAME" -C "$TMP_DIR" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
         ;;
     *.tar.gz|*.tgz)
-        tar -zxf "$TMP_DIR/$FILE_NAME" -C "$TMP_DIR" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        tar -xzvf "$TMP_DIR/$FILE_NAME" -C "$TMP_DIR" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
+        ;;
+    *.gz)
+        gzip -d "$TMP_DIR/$FILE_NAME" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
+        ;;
+    *.tar)
+        tar -xvf "$TMP_DIR/$FILE_NAME" -C "$TMP_DIR" &>/dev/null || { echo "Failed to extract $FILE_NAME"; exit 1; }
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
         ;;
     *.zip)
         unzip -o "$TMP_DIR/$FILE_NAME" -d "$TMP_DIR" &>/dev/null || { echo "Failed to unzip $FILE_NAME"; exit 1; }
-        rm "$TMP_DIR/$FILE_NAME"
+        rm "$TMP_DIR/$FILE_NAME" &>/dev/null
         ;;
     *)
         echo "Unknown file type for $FILE_NAME, assuming binary."
