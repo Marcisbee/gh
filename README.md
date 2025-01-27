@@ -28,7 +28,7 @@ curl -SsfL https://marcisbee.github.io/gh/dl.sh | bash -s -- --repo caddyserver/
 You can also use versioned url if security is on the line:
 
 ```sh
-curl -SsfL https://raw.githubusercontent.com/Marcisbee/gh/refs/tags/v1.0.0/dl.sh | bash -s -- --repo caddyserver/caddy
+curl -SsfL https://raw.githubusercontent.com/Marcisbee/gh/refs/tags/v1.0.1/dl.sh | bash -s -- --repo caddyserver/caddy
 ```
 
 # Motivation
