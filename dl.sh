@@ -50,7 +50,7 @@ fi
 
 OUTPUT_DIR="$(pwd)"
 BINARY_NAME="$(basename "$REPO")"
-TMP_DIR=$(mktemp -d -t sh-installer-0-1-0)
+TMP_DIR=$(mktemp -d -t sh-installer-0-1-0-XXXX)
 
 # Detect platform and architecture
 PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')"
