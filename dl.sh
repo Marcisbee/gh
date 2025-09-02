@@ -17,6 +17,7 @@ validate_repo_name() {
 # Parse arguments
 REPO=""
 RELEASE_TAG="latest"
+BINARY_NAME_OVERRIDE=""
 while [[ $# -gt 0 ]]; do
   case $1 in
     --repo)
@@ -25,6 +26,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --tag)
       RELEASE_TAG="$2"
+      shift 2
+      ;;
+    --name)
+      BINARY_NAME_OVERRIDE="$2"
       shift 2
       ;;
     *)
@@ -50,6 +55,9 @@ fi
 
 OUTPUT_DIR="$(pwd)"
 BINARY_NAME="$(basename "$REPO")"
+if [[ -n "$BINARY_NAME_OVERRIDE" ]]; then
+  BINARY_NAME="$BINARY_NAME_OVERRIDE"
+fi
 TMP_DIR=$(mktemp -d -t sh-installer-0-1-0-XXXX)
 
 # Detect platform and architecture
