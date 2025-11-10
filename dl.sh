@@ -1,3 +1,5 @@
+# dl.sh
+
 #!/bin/bash
 
 # Ensure TMP_DIR is cleaned up on exit
@@ -65,7 +67,7 @@ PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
 
 case "$ARCH" in
-  x86_64) ARCH="amd64" ;;
+  x86_64|amd64) ARCH="(x86_64|amd64)" ;;
   armv7*) ARCH="armv7" ;;
   aarch64|arm64) ARCH="(aarch64|arm64)" ;;
   *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
@@ -149,7 +151,6 @@ case "$FILE_NAME" in
 esac
 
 # Find the largest file and treat it as the binary
-# DOWNLOADED_BINARY=$(find "$TMP_DIR" -type f | xargs du | sort -n | tail -n 1 | cut -f 2)
 DOWNLOADED_BINARY=$(find "$TMP_DIR" -type f -print0 | xargs -0 du | sort -n | tail -n 1 | cut -f 2-)
 if [[ -n "$DOWNLOADED_BINARY" ]]; then
   mv "$DOWNLOADED_BINARY" "$OUTPUT_DIR/$BINARY_NAME"
