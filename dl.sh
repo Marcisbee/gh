@@ -1,5 +1,3 @@
-# dl.sh
-
 #!/bin/bash
 
 # Ensure TMP_DIR is cleaned up on exit
