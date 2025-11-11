@@ -88,12 +88,7 @@ fi
 
 # Extract the asset download URL
 echo "Searching for binary"
-ASSET_URL=$(echo "$RELEASE_INFO" | grep -Eo '"browser_download_url": "[^"]+"' \
-  | grep -iE "$PLATFORM" \
-  | grep -iE "$ARCH" \
-  | grep -E 'https://.+/(.+\.(tar\.xz|tar\.bz|tar\.bz2|tar\.gz|tgz|gz|bz2|zip)\b[^.]|[^.]+$)' \
-  | sed -E 's/.*"(https:[^"]+)".*/\1/' \
-  | awk '{ print length, $0 }' | sort -n | cut -d" " -f2- | head -n 1)
+ASSET_URL=$(echo "$RELEASE_INFO" | jq -r "first(.assets[].browser_download_url | match(\".*$PLATFORM.*\").string | match(\".*$ARCH.*\").string | match(\"^.+.(tar.xz|tar.bz|tar.bz2|tar.gz|tgz|gz|bz2|zip)$\").string)")
 
 if [[ -z "$ASSET_URL" ]]; then
   echo "No compatible binary found for platform: $PLATFORM, architecture: $ARCH"
